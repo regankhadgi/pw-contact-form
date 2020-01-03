@@ -15,19 +15,23 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Text Domain:       pw-contact-form
  * Domain Path:       /languages
  */
-add_action( 'admin_menu', 'pw_admin_menu' );
-if ( !function_exists( 'pw_admin_menu' ) ) {
+if ( !class_exists( 'PW_Contact_Form' ) ) {
 
-    function pw_admin_menu() {
-        add_menu_page( 'PW Conatct Form', 'PW Contact Form', 'manage_options', 'pw-contact-form', 'pw_settings_page', 'dashicons-email' );
+    class PW_Contact_Form {
+
+        function __construct() {
+            add_action( 'admin_menu', array( $this, 'pw_admin_menu' ) );
+        }
+
+        function pw_admin_menu() {
+            add_menu_page( 'PW Conatct Form', 'PW Contact Form', 'manage_options', 'pw-contact-form', array( $this, 'pw_settings_page' ), 'dashicons-email' );
+        }
+
+        function pw_settings_page() {
+            echo "This is our plugin's settings page";
+        }
+
     }
 
-}
-
-if ( !function_exists( 'pw_settings_page' ) ) {
-
-    function pw_settings_page() {
-        echo "This is our plugin's settings page";
-    }
-
+    new PW_Contact_Form();
 }
