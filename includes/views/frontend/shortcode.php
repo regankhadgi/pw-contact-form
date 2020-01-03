@@ -2,7 +2,8 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
 $pwcf_settings = get_option( 'pwcf_settings' );
 ?>
-<form class="pwcf-form">
+<form class="pwcf-form" method="post" action="">
+    <?php wp_nonce_field( 'pwcf_form_nonce', 'pwcf_form_nonce_field' ); ?>
     <div class="pwcf-field-wrap">
         <label><?php echo (!empty( $pwcf_settings['name_field_label'] )) ? esc_html( $pwcf_settings['name_field_label'] ) : 'Your Name'; ?></label>
         <div class="pwcf-field">
