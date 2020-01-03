@@ -1,10 +1,7 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Jan 3, 2020, 10:02:41 PM
-    Author     : regankhadgi
-*/
-
+form.pwcf-form {
+    padding: 20px;
+    box-shadow: 0 0 2px #aaa;
+}
+.pwcf-field-wrap {
+    margin-bottom: 20px;
+}
