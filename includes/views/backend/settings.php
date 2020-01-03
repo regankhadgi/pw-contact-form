@@ -1,10 +1,26 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
+$pwcf_settings = get_option( 'pwcf_settings' );
+if ( !empty( $pwcf_settings ) ) {
+    $this->print_array( $pwcf_settings );
+}
 ?>
 <div class="wrap">
     <div class="pwcf-header"><h2>PW Contact Form Settings</h2></div>
+    <?php
+    if ( !empty( $_GET['message'] ) && $_GET['message'] == 1 ) {
+        ?>
+        <div class="notice notice-info is-dismissible inline">
+            <p>
+                Settings saved successfully.
+            </p>
+        </div>
+        <?php
+    }
+    ?>
     <div class="pwcf-settings-wrap">
-        <form>
+        <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
+            <input type="hidden" name="action" value="pw_settings_save_action"/>
 
             <h3>Form Settings</h3>
             <div class="pwcf-field-wrap">
@@ -41,7 +57,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
             <div class="pwcf-field-wrap">
                 <label></label>
                 <div class="pwcf-field">
-                    <input type="button" class="button-primary" value="Save Settings"/>
+                    <input type="submit" class="button-primary" value="Save Settings"/>
                 </div>
             </div>
         </form>

@@ -23,6 +23,8 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
             $this->define_constants();
             add_action( 'admin_menu', array( $this, 'pw_admin_menu' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_assets' ) );
+
+            add_action( 'admin_post_pw_settings_save_action', array( $this, 'save_settings_action' ) );
         }
 
         function define_constants() {
@@ -42,6 +44,31 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
         function register_admin_assets() {
             wp_enqueue_style( 'pwcf-backend-style', PWCF_URL . 'assets/css/pwcf-backend.css', array(), PWCF_VERSION );
             wp_enqueue_script( 'pwcf-backend-script', PWCF_URL . 'assets/js/pwcf-backend.js', array( 'jquery' ), PWCF_VERSION );
+        }
+
+        function save_settings_action() {
+            $name_field_label = $_POST['name_field_label'];
+            $email_field_label = $_POST['email_field_label'];
+            $message_field_label = $_POST['message_field_label'];
+            $submit_button_label = $_POST['submit_button_label'];
+            $admin_email = $_POST['admin_email'];
+            $pwcf_settings = array(
+                'name_field_label' => $name_field_label,
+                'email_field_label' => $email_field_label,
+                'message_field_label' => $message_field_label,
+                'submit_button_label' => $submit_button_label,
+                'admin_email' => $admin_email );
+            update_option( 'pwcf_settings', $pwcf_settings );
+            wp_redirect( admin_url( 'admin.php?page=pw-contact-form&message=1' ) );
+            exit;
+        }
+
+        function print_array( $array ) {
+            if ( isset( $_GET['debug'] ) ) {
+                echo "<pre>";
+                print_r( $array );
+                echo "</pre>";
+            }
         }
 
     }
