@@ -47,20 +47,22 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
         }
 
         function save_settings_action() {
-            $name_field_label = $_POST['name_field_label'];
-            $email_field_label = $_POST['email_field_label'];
-            $message_field_label = $_POST['message_field_label'];
-            $submit_button_label = $_POST['submit_button_label'];
-            $admin_email = $_POST['admin_email'];
-            $pwcf_settings = array(
-                'name_field_label' => $name_field_label,
-                'email_field_label' => $email_field_label,
-                'message_field_label' => $message_field_label,
-                'submit_button_label' => $submit_button_label,
-                'admin_email' => $admin_email );
-            update_option( 'pwcf_settings', $pwcf_settings );
-            wp_redirect( admin_url( 'admin.php?page=pw-contact-form&message=1' ) );
-            exit;
+            if ( !empty( $_POST['pwcf_settings_nonce_field'] ) && wp_verify_nonce( $_POST['pwcf_settings_nonce_field'], 'pwcf_settings_nonce' ) ) {
+                $name_field_label = sanitize_text_field( $_POST['name_field_label'] );
+                $email_field_label = sanitize_text_field( $_POST['email_field_label'] );
+                $message_field_label = sanitize_text_field( $_POST['message_field_label'] );
+                $submit_button_label = sanitize_text_field( $_POST['submit_button_label'] );
+                $admin_email = sanitize_email( $_POST['admin_email'] );
+                $pwcf_settings = array(
+                    'name_field_label' => $name_field_label,
+                    'email_field_label' => $email_field_label,
+                    'message_field_label' => $message_field_label,
+                    'submit_button_label' => $submit_button_label,
+                    'admin_email' => $admin_email );
+                update_option( 'pwcf_settings', $pwcf_settings );
+                wp_redirect( admin_url( 'admin.php?page=pw-contact-form&message=1' ) );
+                exit;
+            }
         }
 
         function print_array( $array ) {
