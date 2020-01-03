@@ -1,0 +1,1 @@
+<h2>Here goes the contact form settings page</h2>

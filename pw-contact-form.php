@@ -28,7 +28,7 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
         }
 
         function pw_settings_page() {
-            echo "This is our plugin's settings page";
+            include(plugin_dir_path( __FILE__ ) . 'includes/views/backend/settings.php');
         }
 
     }
