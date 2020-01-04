@@ -21,11 +21,11 @@ jQuery(document).ready(function ($) {
             success: function (res) {
                 selector.find('.pwcf-ajax-loader').hide();
                 res = $.parseJSON(res);
+                selector.find('.pwcf-message-wrap').last().html(res.message).show();
                 if (res.status == 200) {
-
-                } else {
-
+                    selector[0].reset();
                 }
+
             }
         });
 

@@ -128,7 +128,8 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
         }
 
         function process_form_ajax() {
-            if ( !empty( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnone'], 'pwcf_ajax_nonce' ) ) {
+
+            if ( !empty( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'pwcf_ajax_nonce' ) ) {
                 $name_field = sanitize_text_field( $_POST['name_field'] );
                 $email_field = sanitize_text_field( $_POST['email_field'] );
                 $message_field = sanitize_text_field( $_POST['message_field'] );
@@ -155,6 +156,7 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
                 }
                 $response['status'] = $status;
                 $response['message'] = $message;
+                die( json_encode( $response ) );
             } else {
                 die( 'No script kiddies please!!' );
             }

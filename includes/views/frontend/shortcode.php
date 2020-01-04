@@ -7,7 +7,10 @@ $pwcf_settings = get_option( 'pwcf_settings' );
     <?php
     if ( !empty( $_SESSION['pwcf_message'] ) ) {
         ?>
-        <div class="pwcf-message-wrap"><?php echo esc_html( $_SESSION['pwcf_message'] ); ?></div>
+        <div class="pwcf-message-wrap"><?php
+            echo esc_html( $_SESSION['pwcf_message'] );
+            unset( $_SESSION['pwcf_message'] );
+            ?></div>
         <?php
     }
     ?>
@@ -36,4 +39,5 @@ $pwcf_settings = get_option( 'pwcf_settings' );
             <img src="<?php echo PWCF_URL . 'assets/images/ajax-loader.gif'; ?>" class="pwcf-ajax-loader" style="display:none;"/>
         </div>
     </div>
+    <div class="pwcf-message-wrap" style="display: none;"></div>
 </form>
