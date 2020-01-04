@@ -31,6 +31,9 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
             add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
 
             add_action( 'template_redirect', array( $this, 'process_form' ) );
+
+            add_action( 'wp_ajax_pwcf_ajax_action', array( $this, 'process_form_ajax' ) );
+            add_action( 'wp_ajax_nopriv_pwcf_ajax_action', array( $this, 'process_form_ajax' ) );
         }
 
         function define_constants() {
@@ -121,6 +124,39 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
                     $message = 'Email couldn\'t be sent.';
                 }
                 $_SESSION['pwcf_message'] = $message;
+            }
+        }
+
+        function process_form_ajax() {
+            if ( !empty( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnone'], 'pwcf_ajax_nonce' ) ) {
+                $name_field = sanitize_text_field( $_POST['name_field'] );
+                $email_field = sanitize_text_field( $_POST['email_field'] );
+                $message_field = sanitize_text_field( $_POST['message_field'] );
+                $email_html = 'Hello there, <br/>'
+                        . '<br/>'
+                        . 'Your have received an email from your site. Details below: <br/>'
+                        . '<br/>'
+                        . 'Name: ' . $name_field . '<br/>'
+                        . 'Email: ' . $email_field . '<br/>'
+                        . 'Message: ' . $message_field . '<br/>'
+                        . '<br/>'
+                        . 'Thank you';
+                $headers[] = 'Content-Type: text/html; charset=UTF-8';
+                $headers[] = 'No Reply<noreply@localhost.com>';
+                $subject = 'New contact email received';
+                $admin_email = (!empty( $pwcf_settings['admin_email'] )) ? $pwcf_settings['admin_email'] : get_option( 'admin_email' );
+                $mail_check = wp_mail( $admin_email, $subject, $email_html, $headers );
+                if ( $mail_check ) {
+                    $status = 200;
+                    $message = 'Email sent successfully.';
+                } else {
+                    $status = 403;
+                    $message = 'Email couldn\'t be sent.';
+                }
+                $response['status'] = $status;
+                $response['message'] = $message;
+            } else {
+                die( 'No script kiddies please!!' );
             }
         }
 

@@ -9,6 +9,7 @@ jQuery(document).ready(function ($) {
             type: 'post',
             url: pwcf_js_obj.ajax_url,
             data: {
+                action: 'pwcf_ajax_action',
                 name_field: name_field,
                 email_field: email_field,
                 message_field: message_field,
