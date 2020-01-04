@@ -29,6 +29,8 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
             add_shortcode( 'pw_contact_form', array( $this, 'generate_contact_form_html' ) );
 
             add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
+
+            add_action( 'template_redirect', array( $this, 'process_form' ) );
         }
 
         function define_constants() {
@@ -88,6 +90,36 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
         function register_frontend_assets() {
             wp_enqueue_style( 'pwcf-frontend-style', PWCF_URL . 'assets/css/pwcf-frontend.css', array(), PWCF_VERSION );
             wp_enqueue_script( 'pwcf-frontend-script', PWCF_URL . 'assets/js/pwcf-frontend.js', array( 'jquery' ), PWCF_VERSION );
+        }
+
+        function process_form() {
+            if ( !empty( $_POST['pwcf_form_nonce_field'] ) && wp_verify_nonce( $_POST['pwcf_form_nonce_field'], 'pwcf_form_nonce' ) ) {
+                session_start();
+                $pwcf_settings = get_option( 'pwcf_settings' );
+                $name_field = sanitize_text_field( $_POST['name_field'] );
+                $email_field = sanitize_text_field( $_POST['email_field'] );
+                $message_field = sanitize_text_field( $_POST['message'] );
+                $email_html = 'Hello there, <br/>'
+                        . '<br/>'
+                        . 'Your have received an email from your site. Details below: <br/>'
+                        . '<br/>'
+                        . 'Name: ' . $name_field . '<br/>'
+                        . 'Email: ' . $email_field . '<br/>'
+                        . 'Message: ' . $message_field . '<br/>'
+                        . '<br/>'
+                        . 'Thank you';
+                $headers[] = 'Content-Type: text/html; charset=UTF-8';
+                $headers[] = 'No Reply<noreply@localhost.com>';
+                $subject = 'New contact email received';
+                $admin_email = (!empty( $pwcf_settings['admin_email'] )) ? $pwcf_settings['admin_email'] : get_option( 'admin_email' );
+                $mail_check = wp_mail( $admin_email, $subject, $email_html, $headers );
+                if ( $mail_check ) {
+                    $message = 'Email sent successfully.';
+                } else {
+                    $message = 'Email couldn\'t be sent.';
+                }
+                $_SESSION['pwcf_message'] = $message;
+            }
         }
 
     }
