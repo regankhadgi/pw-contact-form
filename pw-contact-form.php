@@ -25,6 +25,8 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
             add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_assets' ) );
 
             add_action( 'admin_post_pw_settings_save_action', array( $this, 'save_settings_action' ) );
+
+            add_shortcode( 'pw_contact_form', array( $this, 'generate_form_html' ) );
         }
 
         function define_constants() {
@@ -71,6 +73,10 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
                 print_r( $array );
                 echo "</pre>";
             }
+        }
+
+        function generate_form_html() {
+            return "This is the html generated through shortcode";
         }
 
     }
