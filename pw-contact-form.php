@@ -34,6 +34,11 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
 
             add_action( 'wp_ajax_pwcf_ajax_action', array( $this, 'process_form_ajax' ) );
             add_action( 'wp_ajax_nopriv_pwcf_ajax_action', array( $this, 'process_form_ajax' ) );
+
+            /**
+             * Translation
+             */
+            add_action( 'plugins_loaded', array( $this, 'register_plugin_textdomain' ) );
         }
 
         function define_constants() {
@@ -149,10 +154,10 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
                 $mail_check = wp_mail( $admin_email, $subject, $email_html, $headers );
                 if ( $mail_check ) {
                     $status = 200;
-                    $message = 'Email sent successfully.';
+                    $message = esc_html__( 'Email sent successfully.', 'pw-contact-form' );
                 } else {
                     $status = 403;
-                    $message = 'Email couldn\'t be sent.';
+                    $message = esc_html__( 'Email couldn\'t be sent.', 'pw-contact-form' );
                 }
                 $response['status'] = $status;
                 $response['message'] = $message;
@@ -160,6 +165,10 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
             } else {
                 die( 'No script kiddies please!!' );
             }
+        }
+
+        function register_plugin_textdomain() {
+            load_plugin_textdomain( 'pw-contact-form', false, basename( dirname( __FILE__ ) ) . '/languages' );
         }
 
     }
