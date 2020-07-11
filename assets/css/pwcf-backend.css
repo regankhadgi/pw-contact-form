@@ -1,0 +1,27 @@
+.pwcf-header h2 {
+    background: #007acc;
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+}
+.pwcf-settings-wrap {
+    background: #fff;
+    padding: 10px;
+    min-height: 300px;
+}
+.pwcf-field-wrap {
+    margin-bottom: 20px;
+}
+.pwcf-field-wrap > label {
+    font-weight: 500;
+    display: inline-block;
+    width: 150px;
+    margin-right: 20px;
+}
+.pwcf-field {
+    display: inline-block;
+}
+.pwcf-field input[type="text"]{width:500px;}
+.pwcf-settings-wrap form h3 {
+    padding: 20px 0;
+}

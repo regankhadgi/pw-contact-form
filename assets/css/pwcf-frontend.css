@@ -1,0 +1,16 @@
+form.pwcf-form {
+    padding: 20px;
+    box-shadow: 0 0 2px #aaa;
+}
+.pwcf-field-wrap {
+    margin-bottom: 20px;
+}
+.pwcf-message-wrap {
+    font-size: 16px;
+    border: 1px solid #aaa;
+    padding: 8px;
+    margin-bottom: 25px;
+    background: #eee;
+    font-style: italic;
+}
+.pwcf-ajax-loader{display:inline-block;}
