@@ -150,6 +150,7 @@ if ( !class_exists( 'PW_Contact_Form' ) ) {
                 $headers[] = 'Content-Type: text/html; charset=UTF-8';
                 $headers[] = 'No Reply<noreply@localhost.com>';
                 $subject = 'New contact email received';
+                $pwcf_settings = get_option('pwcf_settings');
                 $admin_email = (!empty( $pwcf_settings['admin_email'] )) ? $pwcf_settings['admin_email'] : get_option( 'admin_email' );
                 $mail_check = wp_mail( $admin_email, $subject, $email_html, $headers );
                 if ( $mail_check ) {
